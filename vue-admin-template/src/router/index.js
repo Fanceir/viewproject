@@ -117,7 +117,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'CreateAnnouncement',
         component: () => import('@/views/createannouncement/index'),
-        meta: { title: '活动创建', icon: 'form' }
+        meta: { title: '创建公告', icon: 'form' }
       }
     ]
   },

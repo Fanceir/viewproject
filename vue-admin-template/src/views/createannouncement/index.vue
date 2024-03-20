@@ -1,79 +1,85 @@
+<!--
+ * @Author: fanc1
+ * @Date: 2024-03-19 20:53:38
+ * @LastEditors: fanc1
+ * @LastEditTime: 2024-03-20 19:20:11
+ -->
 <template>
-  <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
-      <el-table-column align="center" label="ID" width="95">
-        <template slot-scope="scope">
-          {{ scope.$index }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
-        <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
+  <div class="create-announcement-page">
+    <h1 class="page-title">创建公告</h1>
+    <el-form :model="form" label-width="80px" class="announcement-form">
+      <el-form-item label="标题">
+        <el-input v-model="form.title" placeholder="请输入公告标题" />
+      </el-form-item>
+      <el-form-item label="内容">
+        <el-input type="textarea" v-model="form.content" placeholder="请输入公告内容" />
+      </el-form-item>
+      <el-form-item class="form-buttons">
+        <el-button type="primary" @click="submitForm">发布</el-button>
+        <el-button @click="cancelForm">取消</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
-<script>
-import { getList } from '@/api/table'
+<style scoped>
+.create-announcement-page {
+  max-width: 600px;
+  margin: 0 auto;
+}
 
+.page-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.announcement-form {
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.form-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+</style>
+
+<script>
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
   data() {
     return {
-      list: null,
-      listLoading: true
+      form: {
+        title: '',
+        content: ''
+      }
     }
   },
-  created() {
-    this.fetchData()
-  },
   methods: {
-    fetchData() {
-      this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
+    submitForm() {
+      // 在这里发送公告数据到后端保存的逻辑
+      // 省略...
+      // 发送成功后可以跳转到公告列表页面或者给出提示
+      this.$message('提交')
+      // 示例：跳转到公告列表页
+      this.$router.push('/announcement/index')
+    },
+    cancelForm() {
+      // 取消发布，清空表单数据
+      this.form.title = ''
+      this.form.content = ''
     }
   }
 }
 </script>
+
+<style scoped>
+.create-announcement-page {
+  max-width: 600px;
+  margin: auto;
+}
+
+.el-form-item__label {
+  font-weight: bold;
+}
+</style>
